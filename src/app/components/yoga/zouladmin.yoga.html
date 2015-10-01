@@ -1,0 +1,286 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-panel">
+                <div class="tabbable-line">
+                    <ul class="nav nav-tabs ">
+                        <li class="active">
+                            <a href="#all" data-toggle="tab">
+                                All Yoga
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#create" data-toggle="tab">
+                                Create
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#type" data-toggle="tab">
+                                Yoga type
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#sessions" data-toggle="tab">
+                                Sessions
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="all">
+                            <div class="row">
+                                <div class="col-md-2 hidden-xs">
+                                    <h2>Filters</h2>
+                                    <div class="filtercontainer">
+                                        <div class="pull-left">
+                                            <label>User Status</label>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="javascript:void(0)" ng-click="vm.resetStatus()">Reset</a>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <ul class="menu">
+                                                <li ng-repeat="item in vm.userstatus track by $index">
+                                                    <input type="radio" ng-model="vm.status" ng-change="vm.filterStatus()" name="userstatus" value="{{item.profstatus}}" />{{item.profstatus}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-10 col-xs-12">
+                                    <div id="yogalist" class="gridStyle" ui-grid="vm.yogalistOptions"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="create">
+                            <div class="row">
+                                <div class="col-md-12 clearfix selectedDetails">
+                                    <form name="adminform" novalidate>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Cosmic Service ID:</strong></div>
+                                            <div class="col-md-7"><label>{{vm.cosmicid}}</label></div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Organization Name <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model='vm.orgname' class="form-control"
+                                                       placeholder="Organization name" name="orgname" ng-required="true" />
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Category <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="vm.category" name="category" class="form-control"
+                                                       placeholder="Ex: Consultant" ng-required="true" />
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Contact Person <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="vm.fname" name="fname" class="form-control"
+                                                       placeholder="Contact Person name" ng-required="true" />
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Email <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-7">
+                                                <input type="email" ng-model='vm.email' name="email" class="form-control"
+                                                       placeholder="Email address" ng-required="true" />
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Contact Number (Public):</strong></div>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" ng-model='vm.publicnumber' name="publicnumber" placeholder="Mobile number" />
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Phone Number (Private):</strong></div>
+                                            <div class="col-md-7"><input type="text" ng-model='vm.privatenumber' name="privatenumber" class="form-control" placeholder="Mobile number" /></div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>The Story</strong></div>
+                                            <div class="col-md-7"><textarea ng-model='vm.story' name="story"></textarea></div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>FB page:</strong></div>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model='vm.fbpage' name="fbpage" class="form-control"
+                                                       placeholder="Facebook page" />
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Website:</strong></div>
+                                            <div class="col-md-7"><input type="text" ng-model='vm.website' name="website" class="form-control" placeholder="Website address" /></div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Address <span class="mandatory">*</span>:</strong></div>
+                                            <div class="col-md-7"><textarea ng-model='vm.address' name="address" ng-required="true" placeholder="Enter full address with city name seperated by comma. Donot use single or double quotes"></textarea></div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Locality <span class="mandatory">*</span>:</strong></div>
+                                            <div class="col-md-7"><input type="text" ng-model='vm.locality' name="locality" placeholder="ex: BTM Layout" ng-required="true" /></div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Landmark:</strong></div>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model='landmark' name="vm.landmark" class="form-control"
+                                                       placeholder="Nearest landmark" />
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>City <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-7">
+                                                <select class="form-control" ng-model="vm.city" name="city" required ng-options="item.name as item.name for item in vm.citylist">
+                                                    <option value="">Select city</option>
+                                                </select>
+                                                <!--<input type="text" ng-model='vm.city' name="city" class="form-control"
+                                                       placeholder="City" ng-required="true" />-->
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>State <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-7">
+                                                <select class="form-control" name="state" ng-model="vm.state" required ng-options="item.name as item.name for item in vm.statelist">
+                                                    <option value="">Select state</option>
+                                                </select>
+                                                <!--<input type="text" ng-model='vm.state' name="state" class="form-control"
+                                                       placeholder="State" ng-required="true" />-->
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Country <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-7">
+                                                <select class="form-control" name="country" ng-model="vm.country" required ng-options="item.name as item.name for item in vm.countrylist">
+                                                    <option value="">Select country</option>
+                                                </select>
+                                                <!--<input type="text" ng-model='vm.country' name="country" class="form-control"
+                                                       placeholder="Country" ng-required="true" />-->
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-10">
+                                                <button class="btn btn-success pull-right" ng-click="vm.getCordinates()">Get Coordinates</button>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Latitude:</strong></div>
+                                            <div class="col-md-7"><input type="text" ng-model='vm.ldt' name="ldt" class="form-control" placeholder="Ex: 12.9667° N, 77.5667° E" /></div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Longitude:</strong></div>
+                                            <div class="col-md-7"><input type="text" ng-model='vm.longt' name="longt" class="form-control" placeholder="Ex: 12.9667° N, 77.5667° E" /></div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Pincode:</strong></div>
+                                            <div class="col-md-7"><input type="text" ng-model='vm.pincode' name="pincode" class="form-control" placeholder="Pincode" ng-required="true" /></div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Rating (Public) <span class="mandatory">*</span>:</strong></div>
+                                            <div class="col-md-7">
+                                                <input type="number" ng-model='vm.publicrating' name="publicrating" min='1' max='5' class="form-control"
+                                                       placeholder="Rating" ng-required="true" />
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Languages known <span class="mandatory">*</span>:</strong></div>
+                                            <div class="col-md-7">
+                                                <span ng-repeat="list in vm.languages track by $index">
+                                                    <input type="checkbox" ng-model='languages[$index].checked' ng-value="list.langid" />{{list.lang}}&nbsp;&nbsp;
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Profile status <span class="mandatory">*</span>:</strong></div>
+                                            <div class="col-md-7">
+                                                <span ng-repeat="list in vm.userstatus">
+                                                    <input type="radio" name="profilestatus" ng-value="list.statusid" ng-model='$parent.vm.ustatus' />{{list.profstatus}} &nbsp;&nbsp;
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix form-group">
+                                            <div class="col-md-3"><strong>Photo:</strong></div>
+                                            <div class="col-md-7">
+                                                <button class="btn btn-primary" ngf-accept="'image/*'" ngf-select="vm.uploadFile($file)" ng-model="vm.file" multiple="multiple">Upload Photo</button>
+                                                <span>only image formats are supported(ex:jpg,jpeg,png)</span>
+                                            </div>
+                                            <div class="clearfix form-group">
+                                                <div class="col-md-3"><strong>Uploaded Path:</strong></div>
+                                                <div class="col-md-7">{{vm.UploadedPath}}</div>
+                                            </div>
+                                            <div class="clearfix form-group">
+                                                <div class="col-md-3"><strong>Preview</strong></div>
+                                                <div class="col-md-7">
+                                                    <div class="thumbnail">
+                                                        <img class="img-responsive" ngf-src="vm.UploadedPath" alt="Preview image" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-right col-md-12 margin-bottom-20">
+                                                <button class="btn btn-primary" ng-click="vm.edityoga(adminform.$invalid)" ng-show="vm.yogasystemid!=0">Update</button>
+                                                <button class="btn btn-primary" ng-click="vm.createyogaprofile(adminform.$invalid)" ng-show="vm.yogasystemid==0" >Save</button>
+                                                <button class="btn btn-default" type="reset">Reset</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="type">
+                            <div class="row">
+                                <div class="col-md-9 pull-left">
+                                    <button class="btn btn-entry" ng-click="vm.showYogatypePanel = true" ng-disabled="vm.selectedYogaId==undefined">New astrology type</button>
+                                    <button class="btn btn-entry" ng-click="vm.showYogatypePanel = false" ng-show="vm.showYogatypePanel">Hide</button>
+                                </div>
+                                <div class="col-md-3 pull-right">
+                                    <strong>Zoul Id:</strong> {{vm.selectedYogaId}}
+                                </div>
+                            </div>
+                            <div class="row" ng-show="vm.showYogatypePanel!=undefined && vm.showYogatypePanel">
+                                <div class="col-md-7">
+                                    <form name="yogalisttype">
+                                        <div class="form-group">
+                                            <label for="astrologytype">Yoga type <span class="aestrick">*</span></label>
+                                            <input type="text" maxlength="100" name="yogatype" id="yogatype" ng-model="vm.yogatype" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="priceunits">Price Units <span class="aestrick">*</span></label>
+                                            <select class="form-control" id="priceunits" ng-options="item.unitsid as item.units for item in vm.priceunits" name="priceunits" ng-model="vm.selectedpriceunits" required>
+                                                <option value="">Price Units</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="price">Price <span class="aestrick">*</span></label>
+                                            <input type="text" name="price" maxlength="8" id="price" ng-model="vm.price" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="currencytype">Currency type <span class="aestrick">*</span></label>
+                                            <select class="form-control" id="currencytype" ng-options="item.currencyid as item.currency for item in vm.currency" name="currencytype" ng-model="vm.currencytype" required>
+                                                <option value="">Currency type</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="paymenttype">Payment type <span class="aestrick">*</span></label>
+                                            <select class="form-control" id="paymenttype" ng-options="item.paymentid as item.paymenttype for item in vm.paymenttype" name="paymenttype" ng-model="vm.selectedpaymenttype" required>
+                                                <option value="">Payment type</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="futurelisting">Is future listed</label>
+                                            <input type="checkbox" id="futurelisting" name="futurelisting" ng-model="vm.futurelisting" />
+                                        </div>
+                                        <button class="btn btn-default" type="reset">Reset</button>
+                                        <button class="btn btn-success" ng-click="vm.updateyogatype(yogalisttype.$invalid)">Save &amp; Update</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="gridStyle" id="yogatype" ui-grid="vm.yogatypeOptions"></div>
+                        </div>
+                        <div id="sessions" class="tab-pane">
+                            sessions
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
