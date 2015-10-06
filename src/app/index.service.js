@@ -297,6 +297,118 @@
                 $log.error(res);
             });
             return deferred.promise;
+        };
+
+        function addProduct(data) {
+            var deferred = $q.defer();
+
+            $http.post($zouladmincnfg.apiUrl + 'iproducts', data, { headers: { 'accesstoken': $zouladmincnfg.admin.accesstoken } })
+            .success(function (res) {
+                deferred.resolve(res);
+            })
+            .error(function (res) {
+                deferred.reject(res);
+                $log.error('API Error' + res);
+            });
+            return deferred.promise;
+        };
+
+        function addSessions(data) {
+            var deferred = $q.defer();
+
+            $http.post($zouladmincnfg.apiUrl + 'isessions', data, { headers: { 'accesstoken': $zouladmincnfg.admin.accesstoken } })
+            .success(function (res) {
+                deferred.resolve(res);
+            })
+            .error(function (res) {
+                deferred.reject(res);
+                $log.error('API Error' + res);
+            });
+            return deferred.promise;
+        };
+
+        function getProducts() {
+            var deferred = $q.defer();
+
+            $http.get($zouladmincnfg.apiUrl + 'gproducts', { headers: { 'accesstoken': $zouladmincnfg.admin.accesstoken } })
+            .success(function (res) {
+                deferred.resolve(res);
+            })
+            .error(function (res) {
+                deferred.reject(res);
+                $log.error('API Error' + res);
+            });
+            return deferred.promise;
+        };
+
+        function updateProduct(id, data) {
+            var deferred = $q.defer();
+
+            $http.put($zouladmincnfg.apiUrl + 'uproduct/' + id, data, { headers: { 'accesstoken': $zouladmincnfg.admin.accesstoken } })
+            .success(function (res) {
+                deferred.resolve(res);
+            })
+            .error(function (res) {
+                deferred.reject(res);
+                $log.error('API Error' + res);
+            });
+            return deferred.promise;
+        };
+
+        function getSessions(id) {
+            var deferred = $q.defer();
+
+            $http.get($zouladmincnfg.apiUrl + 'gsessions/' + id, { headers: { 'accesstoken': $zouladmincnfg.admin.accesstoken } })
+            .success(function (res) {
+                deferred.resolve(res);
+            })
+            .error(function (res) {
+                deferred.reject(res);
+                $log.error('API Error' + res);
+            });
+            return deferred.promise;
+        };
+
+        function updateSession(id, data) {
+            var deferred = $q.defer();
+
+            $http.put($zouladmincnfg.apiUrl + 'usessions/' + id, data, { headers: { 'accesstoken': $zouladmincnfg.admin.accesstoken } })
+            .success(function (res) {
+                deferred.resolve(res);
+            })
+            .error(function (res) {
+                deferred.reject(res);
+                $log.error('API Error' + res);
+            });
+            return deferred.promise;
+        };
+
+        function getlinkProfiles() {
+            var deferred = $q.defer();
+
+            $http.get($zouladmincnfg.apiUrl + 'gprofiles', { headers: { 'accesstoken': $zouladmincnfg.admin.accesstoken } })
+            .success(function (res) {
+                deferred.resolve(res);
+            })
+            .error(function (res) {
+                deferred.reject(res);
+                $log.error('API Error' + res);
+            });
+            return deferred.promise;
+        };
+
+        function addProductProfiles(id, data) {
+            var deferred = $q.defer();
+
+            $http.put($zouladmincnfg.apiUrl + 'uprofiles/' + id, data, { headers: { 'accesstoken': $zouladmincnfg.admin.accesstoken } })
+            .success(function (res) {
+                deferred.resolve(res);
+            })
+            .error(function (res) {
+                deferred.reject(res);
+                $log.error('API Error' + res);
+            });
+            return deferred.promise;
         }
 
         return {
@@ -321,7 +433,15 @@
             States: getStates,
             UpdateYogaProfile: updateYogaprofile,
             SaveAstrologerInternal: saveAstrologerinternal,
-            AstrologyTypes: getAllastrologytypes
+            AstrologyTypes: getAllastrologytypes,
+            AddProduct: addProduct,
+            AddSessions: addSessions,
+            GetProducts: getProducts,
+            UpdateProduct: updateProduct,
+            GetSessions: getSessions,
+            UpdateSession: updateSession,
+            GetLinkProfiles: getlinkProfiles,
+            AddProductProfiles: addProductProfiles
         };
     }
 })();

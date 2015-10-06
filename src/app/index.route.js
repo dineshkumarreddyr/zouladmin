@@ -30,7 +30,13 @@
               templateUrl: 'app/components/login/zouladmin.login.html',
               controller: 'LoginController',
               controllerAs: 'vm'
-          });
+          })
+        .state('home.products', {
+            url: '/products',
+            templateUrl: 'app/components/products/zouladmin.products.html',
+            controller: 'ProductsController',
+            controllerAs: 'vm'
+        });
 
         $urlRouterProvider.otherwise('/login');
         $locationProvider.html5Mode(true).hashPrefix('!');

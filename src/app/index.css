@@ -463,10 +463,13 @@ textarea {
 #astrolist .ui-grid-row,#astrolist .ui-grid-cell,#astrolist .ui-grid-cell .ui-grid-vertical-bar,
 #astrotype .ui-grid-row,#astrotype .ui-grid-cell,#astrotype .ui-grid-cell .ui-grid-vertical-bar,
 #yogalist .ui-grid-row,#yogalist .ui-grid-cell,#yogalist .ui-grid-cell .ui-grid-vertical-bar,
-#yogatype .ui-grid-row,#yogatype .ui-grid-cell,#yogatype .ui-grid-cell .ui-grid-vertical-bar {
+#yogatype .ui-grid-row,#yogatype .ui-grid-cell,#yogatype .ui-grid-cell .ui-grid-vertical-bar,
+#products .ui-grid-row,#products .ui-grid-cell,#products .ui-grid-cell .ui-grid-vertical-bar,
+#productsessions .ui-grid-row,#productsessions .ui-grid-cell,#productsessions .ui-grid-cell .ui-grid-vertical-bar
+ {
     height:60px !important;
 }
-#astrolist button.btn,#astrotype button.btn,#yogalist button.btn,#yogatype button.btn{
+#astrolist button.btn,#astrotype button.btn,#yogalist button.btn,#yogatype button.btn,#products button.btn,#productsessions button.btn{
     margin:10px !important;
 }
 .btn-entry{

@@ -1,0 +1,151 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable-panel">
+                <div class="tabbable-line">
+                    <ul class="nav nav-tabs ">
+                        <li class="active">
+                            <a href="#add" data-toggle="tab">
+                                Add Products
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#addsessions" data-toggle="tab">
+                                Product sessions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#linkprofile" data-toggle="tab">
+                                Link Profile
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="add">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-entry" ng-click="vm.showaddProducts = true">Add Product</button>
+                                    <button class="btn btn-entry" ng-show="vm.showaddProducts==true" ng-click="vm.showaddProducts = false">Hide</button>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="vm.showaddProducts">
+                                <div class="col-md-12">
+                                    <form name="productsform">
+                                        <div class="form-group">
+                                            <label>Product name <span class="aestrick">*</span></label>
+                                            <input type="text" name="productname" ng-model="vm.productname" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Product description <span class="aestrick">*</span></label>
+                                            <textarea name="description" ng-model="vm.productdescription" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Product picture <span class="aestrick">*</span></label>
+                                            <button class="btn btn-primary" ng-model="vm.file" ngf-accept="'image/*'" ngf-select="vm.uploadFile($file)" multiple="multiple">Upload Photo</button>
+                                            <span>only image formats are supported(ex:jpg,jpeg,png)</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Image path : {{vm.imagePath}}</label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Product Status <span class="aestrick">*</span> : </label>
+                                            <input type="radio" name="1" ng-model="vm.productstatus" value="enable" /> Enable
+                                            <input type="radio" name="1" ng-model="vm.productstatus" value="disable" /> Disable
+                                        </div>
+
+                                        <button class="btn btn-default" type="reset">Reset</button>
+                                        <button class="btn btn-success" ng-show="!vm.showupdateproduct" ng-click="vm.addproduct(productsform.$invalid)">Save product</button>
+                                        <button class="btn btn-success" ng-show="vm.showupdateproduct" ng-click="vm.updateProduct(productsform.$invalid)">Update product</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="products" class="grid" ui-grid="vm.addproductsOptions"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="addsessions">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-entry" ng-disabled="vm.productid==undefined || vm.productid==null" ng-click="vm.showSessionsform = true">Add Sessions</button>
+                                    <button class="btn btn-entry" ng-show="vm.showSessionsform" ng-click="vm.showSessionsform = false">Hide</button>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="vm.showSessionsform">
+                                <div class="col-md-6">
+                                    <form name="sessionsform" novalidate>
+                                        <div class="form-group">
+                                            <label>Product Name : {{vm.sessionproductname}}</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Session <span class="aestrick">*</span></label>
+                                            <select class="form-control" ng-model="vm.productsession" required>
+                                                <option value="">Sessions</option>
+                                                <option value="30">30 Mins</option>
+                                                <option value="45">45 Mins</option>
+                                                <option value="60">60 Mins</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group has-feedback">
+                                            <label>Price <span class="aestrick">*</span></label>
+                                            <input type="text" name="sessionprice" class="form-control" ng-model="vm.sessionprice" required />
+                                            <i class="form-control-feedback">&#8377;</i>
+                                        </div>
+                                        <button class="btn btn-default" type="reset">Reset</button>
+                                        <button class="btn btn-success" ng-show="!vm.showSessionUpdate" ng-click="vm.saveSessions(sessionsform.$invalid)">Save session</button>
+                                        <button class="btn btn-success" ng-show="vm.showSessionUpdate" ng-click="vm.updateSession(sessionform.$invalid)">Update session</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="productsessions" class="grid" ui-grid="vm.sessionOptions"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="linkprofile">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Product name : {{vm.linkproductname}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Link a profile:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-control" ng-options="item.astrologytypeid as item.astrologer for item in vm.profileList" ng-model="vm.astrologyprofile">
+                                        <option value="">Select Profile</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-success" ng-click="vm.assignProfiles()">Add</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="">
+                                        <li ng-repeat="item in vm.assignedProfiles">
+                                            <div class="col-md-10">
+                                                {{item.astrologer}}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-danger" ng-click="vm.removeProfile($index)">
+                                                    <i class="fa fa-remove"></i>
+                                                </button>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                    <button class="btn btn-success" ng-click="vm.addProfiles()">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
