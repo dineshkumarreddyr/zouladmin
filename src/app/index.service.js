@@ -409,7 +409,34 @@
                 $log.error('API Error' + res);
             });
             return deferred.promise;
-        }
+        };
+
+        function getAllyogatypes() {
+            var deferred = $q.defer();
+
+            $http.get($zouladmincnfg.apiUrl + 'gyogatypes', { headers: { 'accesstoken': $zouladmincnfg.admin.accesstoken } })
+            .success(function (res) {
+                deferred.resolve(res);
+            })
+            .error(function (res) {
+                deferred.reject(res);
+                $log.error(res);
+            });
+            return deferred.promise;
+        };
+
+        function saveYogainternal(data) {
+            var deferred = $q.defer();
+
+            $http.post($zouladmincnfg.apiUrl + 'iyogainternal', data, { headers: { 'accesstoken': $zouladmincnfg.admin.accesstoken } })
+            .success(function (res) {
+                deferred.resolve(res);
+            })
+            .error(function (res) {
+                deferred.reject(res);
+            });
+            return deferred.promise;
+        };
 
         return {
             Login: login,
@@ -441,7 +468,9 @@
             GetSessions: getSessions,
             UpdateSession: updateSession,
             GetLinkProfiles: getlinkProfiles,
-            AddProductProfiles: addProductProfiles
+            AddProductProfiles: addProductProfiles,
+            YogaTypes: getAllyogatypes,
+            SaveYogaInternal: saveYogainternal,
         };
     }
 })();

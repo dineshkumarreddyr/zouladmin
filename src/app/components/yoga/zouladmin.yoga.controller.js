@@ -1,16 +1,24 @@
 ﻿(function () {
-    "use strict";
+    'use strict';
 
     angular
-    .module('zouladmin')
-    .controller('YogaController', yogaController);
+      .module('zouladmin')
+      .controller('YogaController', astrologerController);
 
-    function yogaController($scope, $zoulservice, $log, $filter, Upload, $zouladmincnfg, $timeout) {
+    function astrologerController($zoulservice, $log, $filter, $scope, Upload, $zouladmincnfg, $timeout) {
         var vm = this;
 
-        var userstatus = [];
-        vm.yogasystemid = 0;
-        vm.yogalistOptions = {
+        vm.userstatus = [];
+        vm.showAstrologytypePanel = false;
+        vm.astrosystemid = 0;
+        vm.astrotypeOptions = {};
+        vm.astrolistOptions = {
+            showGridFooter: true,
+            onRegisterApi: function (gridApi) {
+                vm.gridApi = gridApi;
+            },
+            enableHorizontalScrollbar: 0,
+            enableVerticalScrollbar: 2,
             columnDefs: [{ field: 'cosmicid', name: 'zoulId', enablePinning: true },
                          { field: 'category', name: 'category', enableFiltering: false },
                          { field: 'orgname', name: 'organizationName', enableColumnResizing: true },
@@ -24,24 +32,42 @@
                          },
                          {
                              name: 'actions', cellTemplate: '<div><button class="btn btn-success"' +
-                               ' ng-click="grid.appScope.vm.addYogatype(grid,row)" title="Add astrology type">+</button><button class="btn btn-success"' +
-                               ' ng-click="grid.appScope.vm.editYogaprofile(grid,row)" title="Edit yoga profile">O</button></div>',
-                             enableFiltering: false
+                               ' ng-click="grid.appScope.vm.addAstrotype(grid,row)" title="Add astrology type"><i class="fa fa-user-plus"></i></button><button class="btn btn-success"' +
+                               ' ng-click="grid.appScope.vm.editAstroprofile(grid,row)" title="Edit astroology profile"><i class="fa fa-pencil-square-o"></i></button><button class="btn btn-success"' +
+                               ' ng-click="grid.appScope.vm.editInternal(grid,row)" title="Add internal communication"><i class="fa fa-plus"></i></button></div>',
+                             enableFiltering: false, width: 200
                          }
             ],
             enableRowSelection: true,
             enableFiltering: true
         };
+        vm.astrotypeOptions = {
+            enableFiltering: true,
+            onRegisterApi: function (gridApi) {
+                vm.gridApi = gridApi;
+            },
+            enableHorizontalScrollbar: 0,
+            enableVerticalScrollbar: 2,
+            columnDefs: [
+                { field: 'astrologytype', name: 'yogaType' },
+                { field: 'currency', name: 'currency' },
+                { field: 'price', name: 'charge' },
+                { field: 'units', name: 'units' },
+                { field: 'paymenttype', name: 'paymentType' },
+                { field: 'future', name: 'futureAstrologer', enableFiltering: false },
+                { name: 'actions', cellTemplate: '<div><button class="btn btn-success" ng-click="grid.appScope.vm.editAstrotype(grid,row)" title="Edit astrology type"><i class="fa fa-pencil-square-o"></i></button></div>' }
+            ]
+        };
 
         function init() {
-            this.getYogalist = function () {
+            this.getAstroList = function () {
                 $zoulservice.YogaProfiles().then(function (response) {
-                    if (response != undefined && response.status != undefined && response.status.indexOf('success') > -1) {
-                        vm.yogalist = response.records;
-                        vm.yogalistOptions.data = response.records;
+                    if (response != undefined && response.status.indexOf('success') > -1) {
+                        vm.yogaList = response.records;
+                        loadGrid(response.records);
                     }
                 }, function (response) {
-                    $log.error('>> API Error ' + response);
+                    $log.error(response);
                 });
             };
             this.getUserstatus = function () {
@@ -53,7 +79,8 @@
                     $log.error(response);
                 });
             };
-            /* Start :: Create yoga profile region */
+
+            /* Start :: Create astrologer profile region */
             this.getLanguages = function () {
                 $zoulservice.Languages().then(function (response) {
                     if (response != undefined && response.status.indexOf('success') > -1) {
@@ -63,9 +90,9 @@
                     $log.error(response);
                 });
             };
-            /* END :: Create yoga profile region*/
+            /* END :: Create astrologer profile region*/
 
-            /*START :: Create yoga type */
+            /*START :: Create astrology type */
             this.getCurrency = function () {
                 $zoulservice.Currency().then(function (response) {
                     if (response != undefined && response.status.indexOf('success') > -1) {
@@ -92,8 +119,17 @@
                 }, function (response) {
                     $log.error('>> API Error' + response);
                 });
-            }
-            /* END :: Create yoga type */
+            };
+            this.getAstrologytypes = function () {
+                $zoulservice.YogaTypes().then(function (response) {
+                    if (response != undefined && response.status.indexOf('success') > -1) {
+                        vm.astroTypes = response.records;
+                    }
+                }, function (response) {
+                    $log.error('>> API Error' + response);
+                });
+            };
+            /* END :: Create astrology type */
             /* START :: Default terms */
             this.getCountries = function () {
                 vm.countrylist = $zoulservice.Countries();
@@ -114,35 +150,119 @@
             /* END :: Default terms */
         }
 
-        (new init()).getYogalist();
+        (new init()).getAstroList();
         (new init()).getUserstatus();
         (new init()).getLanguages();
-        (new init()).getPaymenttype();
-        (new init()).getPriceunits();
         (new init()).getCurrency();
+        (new init()).getPriceunits();
+        (new init()).getPaymenttype();
         (new init()).getCountries();
         (new init()).getCities();
         (new init()).getStates();
         (new init()).binddefaultvalues();
+        (new init()).getAstrologytypes();
+
+        $timeout(function () {
+            vm.city = vm.citylist[0];
+            vm.state = vm.statelist[0];
+            vm.country = vm.countrylist[0];
+        }, 200);
+
+        var loadGrid = function (data) {
+            vm.astrolistOptions.data = data;
+        }
 
         vm.filterStatus = function () {
-            var statusFilter = $filter('filter')(vm.yogalist, { statusname: vm.status });
-            vm.yogalistOptions.data = statusFilter;
+            var statusFilter = $filter('filter')(vm.yogaList, { statusname: vm.status });
+            vm.astrolistOptions.data = statusFilter;
         }
         vm.resetStatus = function () {
-            vm.yogalistOptions.data = vm.yogalist;
+            vm.astrolistOptions.data = vm.yogaList;
         }
+        vm.addAstrotype = function (grid, row) {
+            if (row) {
+                vm.selectedAstrologerReferenceId = row.entity.systemid;
+                vm.selectedAstrologerId = row.entity.cosmicid;
 
-        /* START :: Create yoga profile */
+                if (vm.selectedAstrologerReferenceId && vm.selectedAstrologerId) {
+                    vm.getAstrologyDetailsbyId(vm.selectedAstrologerReferenceId);
+                }
+            }
+        };
+
+        /* START :: Create atrologer profile */
         vm.getCordinates = function () {
             $zoulservice.Coordinates().then(function (position) {
                 vm.ldt = position.coords.latitude;
                 vm.longt = position.coords.longitude;
-                //$scope.$apply();
+                $scope.$apply();
             }, function (response) {
                 $log.error('Geolocation :: ' + error);
             });
-        };
+        }
+
+        vm.createastroprofile = function (invalid) {
+            if (invalid) {
+                alert('Mandatory !!');
+                return;
+            }
+            var languages;
+            /*Languages */
+            _.each(vm.languages, function (v) {
+                if (v.hasOwnProperty('checked') && v.checked) {
+                    if (languages != undefined)
+                        languages += ',' + v.langid;
+                    else
+                        languages = v.langid;
+                }
+            });
+
+            var data = {
+                orgname: vm.orgname,
+                fname: vm.fname,
+                lname: vm.lname,
+                email: vm.email,
+                fbpage: vm.fbpage != undefined ? vm.fbpage : '',
+                website: vm.website != undefined ? vm.website : '',
+                ldt: vm.ldt != undefined ? vm.ldt : '',
+                longt: vm.longt != undefined ? vm.longt : '',
+                address: vm.address,
+                landmark: vm.landmark != undefined ? vm.landmark : '',
+                city: vm.city,
+                state: vm.state,
+                country: vm.country,
+                story: vm.story != undefined ? vm.story : '',
+                privatenumber: vm.privatenumber != undefined ? vm.privatenumber : '',
+                publicnumber: vm.publicnumber != undefined ? vm.publicnumber : '',
+                ustatus: vm.ustatus != undefined ? vm.ustatus : '5',
+                publicrating: vm.publicrating,
+                photolink: vm.UploadedPath != undefined ? vm.UploadedPath : 'http://45.55.171.166:7569/images/astrology/noimg.jpg',
+                pincode: vm.pincode != undefined ? vm.pincode : '0',
+                createduser: 'admin',
+                modifieduser: 'admin',
+                createddate: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                modifieddate: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                category: vm.category != undefined ? vm.category : '',
+                locality: vm.locality != undefined ? vm.locality : '',
+                languagesknown: languages
+            };
+
+            $zoulservice.CreateYogaProfile(data).then(function (response) {
+                if (response != undefined && response.status.indexOf('success') > -1) {
+                    alert('Data saved successfully');
+                    clearProfileform();
+
+                    (new init()).getAstroList();
+
+                    $timeout(function () {
+                        angular.element('.nav-tabs a[href="#all"]').tab('show');
+                    }, 300);
+
+                }
+            }, function (response) {
+                $log.error('>>API error' + response);
+            });
+        }
 
         vm.uploadFile = function (files) {
             if (files && files != null) {
@@ -166,96 +286,13 @@
                 });
             }
         }
+        /* END :: Create astrologer profile */
 
-        vm.createyogaprofile = function (invalid) {
-            if (invalid) {
-                alert('Mandatory !!');
-                return;
-            }
-
-            _.each(vm.languages, function (v) {
-                if (v.hasOwnProperty('checked') && v.checked) {
-                    if (vm.languagesknown != undefined)
-                        vm.languagesknown += ',' + v.langid;
-                    else
-                        vm.languagesknown = v.langid;
-                }
-            });
-
-            var data = {
-                orgname: vm.orgname,
-                fname: vm.fname,
-                lname: vm.lname,
-                email: vm.email,
-                fbpage: vm.fbpage != undefined ? vm.fbpage : '',
-                website: vm.website != undefined ? vm.website : '',
-                ldt: vm.ldt != undefined ? vm.ldt : '',
-                longt: vm.longt != undefined ? vm.longt : '',
-                address: vm.address,
-                landmark: vm.landmark != undefined ? vm.landmark : '',
-                city: vm.city,
-                state: vm.state,
-                country: vm.country,
-                story: vm.story != undefined ? vm.story : '',
-                privatenumber: vm.privatenumber != undefined ? vm.privatenumber : '',
-                publicnumber: vm.publicnumber != undefined ? vm.publicnumber : '',
-                ustatus: vm.ustatus != undefined ? vm.ustatus : '5',
-                publicrating: vm.publicrating,
-                photolink: vm.UploadedPath != undefined ? vm.UploadedPath : 'http://45.55.171.166:7569/images/astrology/noimg.jpg',
-                pincode: vm.pincode != undefined ? vm.pincode : '0',
-                createduser: 'admin',
-                modifieduser: 'admin',
-                createddate: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                modifieddate: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                category: vm.category != undefined ? vm.category : '',
-                locality: vm.locality != undefined ? vm.locality : ''
-
-            };
-
-            $zoulservice.CreateYogaProfile(data).then(function (response) {
-                if (response != undefined && response.status != undefined && response.status.indexOf('success') > -1) {
-                    alert('Yoga profile created successfully !!');
-                }
-            }, function (response) {
-                $log.error('>> API Error ' + response);
-            });
-        }
-
-        vm.clearyogaform = function () {
-            vm.orgname = null;
-            vm.fname = null;
-            vm.lname = null;
-            vm.email = null;
-            vm.fbpage = null;
-            vm.website = null;
-            vm.ldt = null;
-            vm.longt = null;
-            vm.address = null;
-            vm.landmark = null;
-            vm.city = null;
-            vm.state = null;
-            vm.country = null;
-            vm.story = null;
-            vm.privatenumber = null;
-            vm.publicnumber = null;
-            vm.ustatus = null;
-            vm.publicrating = null;
-            vm.pincode = null;
-            vm.category = null;
-            vm.UploadedPath = null;
-            vm.ustatus = null;
-            vm.languages = null;
-            vm.cosmicid = null;
-            vm.yogasystemid = 0;
-            vm.cosmicid = null;
-        }
-        /* END :: Create yoga profile */
-
-        /* START :: Edit Yoga profile */
-        vm.editYogaprofile = function (grid, row) {
+        /* START :: Edit astrologer profile */
+        vm.editAstroprofile = function (grid, row) {
             var data = row.entity;
             if (data) {
-                vm.yogasystemid = data.systemid;
+                vm.astrosystemid = data.systemid;
                 vm.cosmicid = data.cosmicid;
                 vm.orgname = data.orgname;
                 vm.category = data.category;
@@ -269,33 +306,47 @@
                 vm.address = data.address;
                 vm.locality = data.locality;
                 vm.landmark = data.landmark;
-                vm.city = data.city;
-                vm.state = data.state;
-                vm.country = data.country;
                 vm.ldt = data.latitude;
                 vm.longt = data.longitude;
                 vm.pincode = data.pincode;
                 vm.publicrating = data.publicrating;
-                vm.ustatus = data.userstatus;
                 vm.UploadedPath = data.photo;
+                vm.ustatus = data.userstatus;
+
+                /* For Languages */
+                if (vm.languages) {
+                    var selectedArray = data.languagesknown.split(',');
+                    if (selectedArray.length > 0) {
+                        _.each(selectedArray, function (v, i) {
+                            var fiteredObj = _.filter(vm.languages, function (a) {
+                                return a.langid == v;
+                            });
+                            if (fiteredObj.length > 0) {
+                                fiteredObj[0].checked = true;
+                            }
+                        });
+                    }
+                }
             }
 
             $timeout(function () {
                 angular.element('.nav-tabs a[href="#create"]').tab('show');
-            }, 200);
-        }
+            }, 300);
+        };
 
-        vm.edityoga = function (invalid) {
+        vm.updateProfile = function (invalid) {
             if (invalid) {
                 alert('Mandatory !!');
                 return;
             }
+            var languages;
+            /*Languages */
             _.each(vm.languages, function (v) {
                 if (v.hasOwnProperty('checked') && v.checked) {
-                    if (vm.languagesknown != undefined)
-                        vm.languagesknown += ',' + v.langid;
+                    if (languages != undefined)
+                        languages += ',' + v.langid;
                     else
-                        vm.languagesknown = v.langid;
+                        languages = v.langid;
                 }
             });
 
@@ -325,68 +376,53 @@
                 createddate: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
                 modifieddate: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
                 category: vm.category != undefined ? vm.category : '',
-                locality: vm.locality != undefined ? vm.locality : ''
-
+                locality: vm.locality != undefined ? vm.locality : '',
+                languagesknown: languages
             };
 
-            $zoulservice.UpdateYogaProfile(vm.yogasystemid, data).then(function (response) {
-                if (response != undefined && response.status.indexOf('success') > -1) {
-                    alert('Data saved successfully !!');
-                    (new init()).getYogalist();
-                    clearyogaform();
+            $zoulservice.UpdateYogaProfile(vm.astrosystemid, data).then(function (response) {
+                if (response != undefined && response.status != undefined && response.status.indexOf('success') > -1) {
+                    alert('Data updated successfully !!');
+                    clearProfileform();
+
+                    (new init()).getAstroList();
+
+                    $timeout(function () {
+                        angular.element('.nav-tabs a[href="#all"]').tab('show');
+                    }, 300);
                 }
             }, function (response) {
-                $log.error(response);
+                $log.error('>> API error' + res);
             });
-
-
         }
-        /* END :: Edit Yoga profile */
 
-        /* START :: Create yoga type */
-        vm.yogatypeOptions = {
-            enableFiltering: true,
-            columnDefs: [
-                { field: 'yogatype', name: 'yogaType' },
-                { field: 'currency', name: 'currency' },
-                { field: 'price', name: 'charge' },
-                { field: 'units', name: 'units' },
-                { field: 'paymenttype', name: 'paymentType' },
-                { field: 'future', name: 'futureYogaProfile', enableFiltering: false },
-                { name: 'actions', cellTemplate: '<div><button class="btn btn-success" ng-click="grid.appScope.vm.editYogatype(grid,row)" title="Edit Yoga type">O</button></div>', enableFiltering: false }
-            ]
+        var clearProfileform = function () {
+            vm.orgname = vm.fname = vm.lname = vm.email = vm.fbpage = vm.website = vm.ldt = vm.longt = vm.address = vm.landmark = vm.story =
+                vm.privatenumber = vm.publicnumber = vm.ustatus = vm.publicrating = vm.UploadedPath = vm.pincode = vm.category = vm.locality = null;
         }
-        vm.getYogaDetailsbyId = function (id) {
-            $zoulservice.Yogatype(id).then(function (response) {
-                if (response != undefined && response.status.indexOf('success') > -1) {
-                    vm.yogatypeOptions.data = response.records;
+        /* END :: Edit astrologer profile */
+
+        /* START :: Astrology details */
+        vm.getAstrologyDetailsbyId = function (id) {
+            $zoulservice.Yogatype(id).then(function (res) {
+                if (res != undefined && res.status.indexOf('success') > -1) {
+                    vm.astrotypeOptions.data = res.records;
 
                     $timeout(function () {
                         angular.element('.nav-tabs a[href="#type"]').tab('show');
                     }, 300);
                 }
-            }, function (response) {
-                $log.error('>> API Error' + response);
+            }, function (res) {
+                $log.error(res);
             });
         }
-        vm.addYogatype = function (grid, row) {
-            if (row) {
-                vm.selectedYogaReferenceId = row.entity.systemid;
-                vm.selectedYogaId = row.entity.cosmicid;
-
-                if (vm.selectedYogaReferenceId && vm.selectedYogaId) {
-                    vm.getYogaDetailsbyId(vm.selectedYogaReferenceId);
-                }
-            }
-        };
-
-        vm.updateyogatype = function (invalid) {
+        vm.updateastrologytype = function (invalid) {
             if (invalid) {
-                alert('Mandatory !!');
+                alert('Mandatory!!');
                 return;
             }
             var data = {
-                yogatype: vm.yogatype,
+                yogatype: vm.astrologytype,
                 priceunits: vm.selectedpriceunits,
                 price: vm.price,
                 currency: vm.currencytype,
@@ -395,27 +431,95 @@
                 modifieduser: 'Admin',
                 createddate: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
                 modifieddate: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
-                yogasystemid: vm.selectedYogaReferenceId,
+                yogasystemid: vm.selectedAstrologerReferenceId,
                 isfuture: vm.futurelisting != undefined && vm.futurelisting != null ? vm.futurelisting : false
-            };
+            }
 
             $zoulservice.UpdateYogaType(data).then(function (response) {
-                if (response != undefined && response.status.indexOf('success') > -1) {
-                    alert('Yoga type saved successfully !!');
-                    vm.getYogaDetailsbyId(vm.selectedYogaReferenceId);
+                if (response != undefined && response.status != undefined && response.status.indexOf('success') > -1) {
+                    alert('Data saved successfully');
+                    vm.getAstrologyDetailsbyId(vm.selectedAstrologerReferenceId);
                     clearAstrotypeform();
                 }
             }, function (response) {
-                $log.error('>> API Error' + response);
+                $log.error('>>API Error' + response);
             });
         };
 
         var clearAstrotypeform = function () {
-            vm.yogatype = vm.selectedpriceunits = vm.price = vm.currencytype = vm.selectedpaymenttype = vm.futurelisting = null;
+            vm.astrologytype = vm.selectedpriceunits = vm.price = vm.currencytype = vm.selectedpaymenttype = vm.futurelisting = null;
         }
-        vm.editYogatype = function (grid, row) {
-            vm.showYogatypePanel = true;
+
+        vm.editAstrotype = function (grid, row) {
+            vm.showAstrologytypePanel = true;
         }
-        /* END  :: Create yoga type */
+        /* END :: Astrology details */
+
+        /* START :: Save Internal info */
+        vm.editInternal = function (grid, row) {
+            var data = row.entity;
+            if (data) {
+                vm.selectedAstrologerReferenceId = data.systemid;
+                vm.selectedAstrologerid = data.cosmicid;
+            }
+
+            $timeout(function () {
+                angular.element('.nav-tabs a[href="#internal"]').tab('show');
+            }, 200);
+        }
+
+        vm.saveinternalinfo = function (invalid) {
+            if (invalid) {
+                alert('mandatory !!');
+                return;
+            }
+
+            var data = {
+                yogaid: vm.selectedAstrologerReferenceId,
+                communication: vm.encommunication,
+                rating: vm.internalrating,
+                judgement: vm.judgement,
+                videoaccept: vm.willingvideos,
+                estbyear: vm.experience,
+                ambience: vm.ambience,
+                createduser: 'admin',
+                modifieduser: 'admin',
+                createddate: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                modifieddate: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+                instantbooking: vm.instantbooking,
+                instantbookingfees: vm.ibookingfees,
+                phoneconsulation: vm.phoneconsulation,
+                refund: vm.refund,
+                learnedby: vm.learnedby,
+                doingas: vm.doingas,
+                guruname: vm.guruname
+            };
+
+            $zoulservice.SaveYogaInternal(data).then(function (response) {
+                if (response != undefined && response.status.indexOf('success') > -1) {
+                    alert('Data saved successfully');
+                    clearAstrologerInternal();
+                }
+            }, function (responose) {
+                $log.error('>> API Failed' + response);
+            });
+        }
+
+        var clearAstrologerInternal = function () {
+            vm.encommunication = null;
+            vm.internalrating = null;
+            vm.judgement = null;
+            vm.willingvideos = null;
+            vm.experience = null;
+            vm.ambience = null;
+            vm.instantbooking = null;
+            vm.ibookingfees = null;
+            vm.phoneconsulation = null;
+            vm.refund = null;
+            vm.learnedby = null;
+            vm.doingas = null;
+            vm.guruname = null;
+        }
+        /* END :: Save internal info */
     }
 })();

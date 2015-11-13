@@ -6,7 +6,7 @@
                     <ul class="nav nav-tabs ">
                         <li class="active">
                             <a href="#all" data-toggle="tab">
-                                All Yoga
+                                All astrologers
                             </a>
                         </li>
                         <li>
@@ -16,12 +16,12 @@
                         </li>
                         <li>
                             <a href="#type" data-toggle="tab">
-                                Yoga type
+                                Astrology type
                             </a>
                         </li>
                         <li>
-                            <a href="#sessions" data-toggle="tab">
-                                Sessions
+                            <a href="#internal" data-toggle="tab">
+                                Internal Communication
                             </a>
                         </li>
                     </ul>
@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-10 col-xs-12">
-                                    <div id="yogalist" class="gridStyle" ui-grid="vm.yogalistOptions"></div>
+                                    <div id="astrolist" class="grid" ui-grid="vm.astrolistOptions"></div>
                                 </div>
                             </div>
                         </div>
@@ -60,28 +60,28 @@
                                             <div class="col-md-7"><label>{{vm.cosmicid}}</label></div>
                                         </div>
                                         <div class="clearfix form-group">
-                                            <div class="col-md-3"><strong>Organization Name <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-3"><strong>Organization Name <span class="mandatory">*</span>:</strong></div>
                                             <div class="col-md-7">
                                                 <input type="text" ng-model='vm.orgname' class="form-control"
                                                        placeholder="Organization name" name="orgname" ng-required="true" />
                                             </div>
                                         </div>
                                         <div class="clearfix form-group">
-                                            <div class="col-md-3"><strong>Category <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-3"><strong>Category <span class="mandatory">*</span>:</strong></div>
                                             <div class="col-md-7">
                                                 <input type="text" ng-model="vm.category" name="category" class="form-control"
                                                        placeholder="Ex: Consultant" ng-required="true" />
                                             </div>
                                         </div>
                                         <div class="clearfix form-group">
-                                            <div class="col-md-3"><strong>Contact Person <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-3"><strong>Contact Person <span class="mandatory">*</span>:</strong></div>
                                             <div class="col-md-7">
                                                 <input type="text" ng-model="vm.fname" name="fname" class="form-control"
                                                        placeholder="Contact Person name" ng-required="true" />
                                             </div>
                                         </div>
                                         <div class="clearfix form-group">
-                                            <div class="col-md-3"><strong>Email <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-3"><strong>Email <span class="mandatory">*</span>:</strong></div>
                                             <div class="col-md-7">
                                                 <input type="email" ng-model='vm.email' name="email" class="form-control"
                                                        placeholder="Email address" ng-required="true" />
@@ -110,7 +110,7 @@
                                         </div>
                                         <div class="clearfix form-group">
                                             <div class="col-md-3"><strong>Website:</strong></div>
-                                            <div class="col-md-7"><input type="text" ng-model='vm.website' name="website" class="form-control" placeholder="Website address" /></div>
+                                            <div class="col-md-7"><input type="text" ng-model='vm.website' name="website" class="form-control" placeholder="Astrologer website address" /></div>
                                         </div>
                                         <div class="clearfix form-group">
                                             <div class="col-md-3"><strong>Address <span class="mandatory">*</span>:</strong></div>
@@ -123,14 +123,14 @@
                                         <div class="clearfix form-group">
                                             <div class="col-md-3"><strong>Landmark:</strong></div>
                                             <div class="col-md-7">
-                                                <input type="text" ng-model='landmark' name="vm.landmark" class="form-control"
+                                                <input type="text" ng-model='vm.landmark' name="landmark" class="form-control"
                                                        placeholder="Nearest landmark" />
                                             </div>
                                         </div>
                                         <div class="clearfix form-group">
-                                            <div class="col-md-3"><strong>City <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-3"><strong>City <span class="mandatory">*</span>:</strong></div>
                                             <div class="col-md-7">
-                                                <select class="form-control" ng-model="vm.city" name="city" required ng-options="item.name as item.name for item in vm.citylist">
+                                                <select class="form-control" ng-options="item.name as item.name for item in vm.citylist" ng-model="vm.city" name="city" ng-required="true">
                                                     <option value="">Select city</option>
                                                 </select>
                                                 <!--<input type="text" ng-model='vm.city' name="city" class="form-control"
@@ -138,9 +138,9 @@
                                             </div>
                                         </div>
                                         <div class="clearfix form-group">
-                                            <div class="col-md-3"><strong>State <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-3"><strong>State <span class="mandatory">*</span>:</strong></div>
                                             <div class="col-md-7">
-                                                <select class="form-control" name="state" ng-model="vm.state" required ng-options="item.name as item.name for item in vm.statelist">
+                                                <select class="form-control" ng-options="item.name as item.name for item in vm.statelist" ng-model="vm.state" name="state" ng-required="true">
                                                     <option value="">Select state</option>
                                                 </select>
                                                 <!--<input type="text" ng-model='vm.state' name="state" class="form-control"
@@ -148,9 +148,9 @@
                                             </div>
                                         </div>
                                         <div class="clearfix form-group">
-                                            <div class="col-md-3"><strong>Country <span class="aestrick">*</span>:</strong></div>
+                                            <div class="col-md-3"><strong>Country <span class="mandatory">*</span>:</strong></div>
                                             <div class="col-md-7">
-                                                <select class="form-control" name="country" ng-model="vm.country" required ng-options="item.name as item.name for item in vm.countrylist">
+                                                <select class="form-control" ng-options="item.name as item.name for item in vm.countrylist" ng-model="vm.country" name="country" ng-required="true">
                                                     <option value="">Select country</option>
                                                 </select>
                                                 <!--<input type="text" ng-model='vm.country' name="country" class="form-control"
@@ -185,7 +185,7 @@
                                             <div class="col-md-3"><strong>Languages known <span class="mandatory">*</span>:</strong></div>
                                             <div class="col-md-7">
                                                 <span ng-repeat="list in vm.languages track by $index">
-                                                    <input type="checkbox" ng-model='languages[$index].checked' ng-value="list.langid" />{{list.lang}}&nbsp;&nbsp;
+                                                    <input type="checkbox" ng-model='vm.languages[$index].checked' ng-value="list.langid" />{{list.lang}}&nbsp;&nbsp;
                                                 </span>
                                             </div>
                                         </div>
@@ -200,7 +200,7 @@
                                         <div class="clearfix form-group">
                                             <div class="col-md-3"><strong>Photo:</strong></div>
                                             <div class="col-md-7">
-                                                <button class="btn btn-primary" ngf-accept="'image/*'" ngf-select="vm.uploadFile($file)" ng-model="vm.file" multiple="multiple">Upload Photo</button>
+                                                <button class="btn btn-primary" ng-model="vm.file" ngf-accept="'image/*'" ngf-select="vm.uploadFile($file)" multiple="multiple">Upload Photo</button>
                                                 <span>only image formats are supported(ex:jpg,jpeg,png)</span>
                                             </div>
                                             <div class="clearfix form-group">
@@ -216,9 +216,9 @@
                                                 </div>
                                             </div>
                                             <div class="text-right col-md-12 margin-bottom-20">
-                                                <button class="btn btn-primary" ng-click="vm.edityoga(adminform.$invalid)" ng-show="vm.yogasystemid!=0">Update</button>
-                                                <button class="btn btn-primary" ng-click="vm.createyogaprofile(adminform.$invalid)" ng-show="vm.yogasystemid==0" >Save</button>
-                                                <button class="btn btn-default" type="reset">Reset</button>
+                                                <button class="btn btn-primary" ng-show="vm.astrosystemid==0" ng-click="vm.createastroprofile(adminform.$invalid)">Save</button>
+                                                <button class="btn btn-primary" ng-show="vm.astrosystemid!=0" ng-click="vm.updateProfile(adminform.$invalid)">Update</button>
+                                                <button class="btn btn-default" ng-click="vm.clearastroform()">Clear</button>
                                             </div>
                                         </div>
                                     </form>
@@ -228,19 +228,22 @@
                         <div class="tab-pane" id="type">
                             <div class="row">
                                 <div class="col-md-9 pull-left">
-                                    <button class="btn btn-entry" ng-click="vm.showYogatypePanel = true" ng-disabled="vm.selectedYogaId==undefined">New astrology type</button>
-                                    <button class="btn btn-entry" ng-click="vm.showYogatypePanel = false" ng-show="vm.showYogatypePanel">Hide</button>
+                                    <button class="btn btn-entry" ng-click="vm.showAstrologytypePanel = true" ng-disabled="vm.selectedAstrologerId==undefined">New astrology type</button>
+                                    <button class="btn btn-entry" ng-click="vm.showAstrologytypePanel = false" ng-show="vm.showAstrologytypePanel">Hide</button>
                                 </div>
                                 <div class="col-md-3 pull-right">
-                                    <strong>Zoul Id:</strong> {{vm.selectedYogaId}}
+                                    <strong>Zoul Id:</strong> {{vm.selectedAstrologerId}}
                                 </div>
                             </div>
-                            <div class="row" ng-show="vm.showYogatypePanel!=undefined && vm.showYogatypePanel">
+                            <div class="row" ng-show="vm.selectedAstrologerId!=undefined && vm.showAstrologytypePanel">
                                 <div class="col-md-7">
-                                    <form name="yogalisttype">
+                                    <form name="astrotype">
                                         <div class="form-group">
-                                            <label for="astrologytype">Yoga type <span class="aestrick">*</span></label>
-                                            <input type="text" maxlength="100" name="yogatype" id="yogatype" ng-model="vm.yogatype" required />
+                                            <label for="astrologytype">Astrology type <span class="aestrick">*</span></label>
+                                            <select class="form-control" id="astrologytype" ng-options="item.typeid as item.yogatype for item in vm.astroTypes" ng-model="vm.astrologytype" required>
+                                                <option value="">Select Astrologytype</option>
+                                            </select>
+                                            <!--<input type="text" maxlength="100" name="astrologytype" id="astrologytype" ng-model="vm.astrologytype" required />-->
                                         </div>
                                         <div class="form-group">
                                             <label for="priceunits">Price Units <span class="aestrick">*</span></label>
@@ -268,15 +271,90 @@
                                             <label for="futurelisting">Is future listed</label>
                                             <input type="checkbox" id="futurelisting" name="futurelisting" ng-model="vm.futurelisting" />
                                         </div>
-                                        <button class="btn btn-default" type="reset">Reset</button>
-                                        <button class="btn btn-success" ng-click="vm.updateyogatype(yogalisttype.$invalid)">Save &amp; Update</button>
+                                        <button class="btn btn-default">Reset</button>
+                                        <button class="btn btn-success" ng-click="vm.updateastrologytype(astrotype.$invalid)">Save &amp; Update</button>
                                     </form>
                                 </div>
                             </div>
-                            <div class="gridStyle" id="yogatype" ui-grid="vm.yogatypeOptions"></div>
+                            <div id="astrotype" class="grid" ui-grid="vm.astrotypeOptions"></div>
                         </div>
-                        <div id="sessions" class="tab-pane">
-                            sessions
+                        <div id="internal" class="tab-pane">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form name="astrologerinternal" novalidate>
+                                        <div class="form-group">
+                                            <label>Zoul Id : {{vm.selectedAstrologerid}}</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="encommnunication">Communication in English <span class="aestrick">*</span></label>
+                                            <input type="text" name="english" ng-model="vm.encommunication" id="encommnunication" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="internalrating">Internal Rating <span class="aestrick">*</span></label>
+                                            <input type="number" min="0" max="5" maxlength="1" required id="iternalrating" ng-model="vm.internalrating" name="internalrating" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="judgement">Judgement</label>
+                                            <textarea name="judgement" id="judgement" maxlength="400" ng-model="vm.judgement" rows="3"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="willingvideos">Willing to do videos <span class="aestrick">*</span></label>
+                                            <input type="radio" name="3" ng-model="vm.willingvideos" value="Yes" /> Yes
+                                            <input type="radio" name="3" ng-model="vm.willingvideos" value="No" /> No
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="experience">Experience <span class="aestrick">*</span></label>
+                                            <input type="number" min="0" max="80" maxlength="3" name="experience" ng-model="vm.experience" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ambience">Ambience</label>
+                                            <input type="number" min="0" max="5" maxlength="5" name="ambience" ng-model="vm.ambience" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="instantbooking">Instant Booking <span class="aestrick">*</span></label>
+                                            <input type="radio" name="2" ng-model="vm.instantbooking" value="Yes" /> Yes
+                                            <input type="radio" name="2" ng-model="vm.instantbooking" value="No" /> No
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ibookingfees">Instant booking fees</label>
+                                            <input type="text" name="ibookingfees" ng-model="vm.ibookingfees" id="ibookingfees" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Phone consulation  <span class="aestrick">*</span></label>
+                                            <input type="radio" name="1" ng-model="vm.phoneconsulation" value="Yes" /> Yes
+                                            <input type="radio" name="1" ng-model="vm.phoneconsulation" value="No" /> No
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="refund">Refund if not satisfied</label>
+                                            <input type="radio" name="4" ng-model="vm.refund" value="Yes" /> Yes
+                                            <input type="radio" name="4" ng-model="vm.refund" value="No" /> No
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="learnedby">Learned by</label>
+                                            <select id="learnedby" ng-model="vm.learnedby" class="form-control">
+                                                <option value="">Select</option>
+                                                <option value="Self">Self</option>
+                                                <option value="Traditional/Gurukula">Traditional/Gurukula</option>
+                                                <option value="Course">Course</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="doingas">Doing as <span class="aestrick">*</span></label>
+                                            <select id="doingas" class="form-control" ng-model="vm.doingas" required>
+                                                <option value="">Select</option>
+                                                <option value="Fulltime">Fulltime</option>
+                                                <option value="Parttime">Parttime</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="guru">Guru name</label>
+                                            <input type="text" maxlength="300" ng-model="vm.guruname" name="gurunmae" />
+                                        </div>
+                                        <button type="reset" class="btn btn-default">Reset</button>
+                                        <button ng-disabled="vm.selectedAstrologerid==undefined" ng-click="vm.saveinternalinfo(astrologerinternal.$invalid)" class="btn btn-success">Save</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
