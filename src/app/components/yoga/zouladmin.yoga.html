@@ -6,7 +6,7 @@
                     <ul class="nav nav-tabs ">
                         <li class="active">
                             <a href="#all" data-toggle="tab">
-                                All astrologers
+                                All Yoga Trainers
                             </a>
                         </li>
                         <li>
@@ -16,7 +16,7 @@
                         </li>
                         <li>
                             <a href="#type" data-toggle="tab">
-                                Astrology type
+                                Yoga type
                             </a>
                         </li>
                         <li>
@@ -84,7 +84,7 @@
                                             <div class="col-md-3"><strong>Email <span class="mandatory">*</span>:</strong></div>
                                             <div class="col-md-7">
                                                 <input type="email" ng-model='vm.email' name="email" class="form-control"
-                                                       placeholder="Email address" ng-required="true" />
+                                                       placeholder="Email address" />
                                             </div>
                                         </div>
                                         <div class="clearfix form-group">
@@ -232,7 +232,7 @@
                                     <button class="btn btn-entry" ng-click="vm.showAstrologytypePanel = false" ng-show="vm.showAstrologytypePanel">Hide</button>
                                 </div>
                                 <div class="col-md-3 pull-right">
-                                    <strong>Zoul Id:</strong> {{vm.selectedAstrologerId}}
+                                    <strong>Cosmic Id:</strong> {{vm.selectedAstrologerId}}
                                 </div>
                             </div>
                             <div class="row" ng-show="vm.selectedAstrologerId!=undefined && vm.showAstrologytypePanel">
@@ -283,7 +283,7 @@
                                 <div class="col-md-6">
                                     <form name="astrologerinternal" novalidate>
                                         <div class="form-group">
-                                            <label>Zoul Id : {{vm.selectedAstrologerid}}</label>
+                                            <label>Cosmic Id : {{vm.selectedAstrologerid}}</label>
                                         </div>
                                         <div class="form-group">
                                             <label for="encommnunication">Communication in English <span class="aestrick">*</span></label>
